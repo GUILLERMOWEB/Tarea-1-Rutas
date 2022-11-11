@@ -6,6 +6,9 @@ const usersRouter = require("./routes/users")
 const sumarRouter = require("./routes/maths")
 const divisionRouter = require("./routes/maths")
 const parImparRouter  = require("./routes/maths")
+const listRouter = require("./routes/list")
+const ejemploPostRouter  = require("./routes/post")
+const ejemploBody = require('./routes/post')
 
 //Configuración
 app.use(logger("dev"))
@@ -31,17 +34,11 @@ app.use('/', sumarRouter )
 app.get('/', parImparRouter) 
   
 
+app.get('/lista',listRouter)
 
+app.post('/crear', ejemploPostRouter)
 
-app.get('/lista-de-compras',(req,res) => {
-  res.json({
-      producto1: req.query.producto1,
-      producto2: req.query.producto2,
-      producto3: req.query.producto3,
-      producto4: req.query.producto4,
-      producto5: req.query.producto5,
-  })
-})
+app.get('/body', ejemploBody)
 
 
 module.exports = app
