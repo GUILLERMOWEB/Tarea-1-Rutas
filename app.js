@@ -10,9 +10,16 @@ const listRouter = require("./routes/list")
 const ejemploPostRouter  = require("./routes/post")
 const ejemploBody = require('./routes/post')
 
+const {conect}=require("./db/db")
+
+const cors = require ("cors")
+
 //Configuración
 app.use(logger("dev"))
 app.use(express.json())
+app.use(cors())
+
+conect()
 
 
 
@@ -39,6 +46,8 @@ app.get('/lista',listRouter)
 app.post('/crear', ejemploPostRouter)
 
 app.get('/body', ejemploBody)
+
+
 
 
 module.exports = app
