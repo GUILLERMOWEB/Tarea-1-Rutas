@@ -1,4 +1,5 @@
 
+/*
 const express = require("express")
 const router = express.Router()
 
@@ -18,3 +19,4 @@ router.get('/numero', parImpar)
 
 
   module.exports = router  
+  */

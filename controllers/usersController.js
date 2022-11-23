@@ -1,5 +1,5 @@
 
-
+/*
 
 const users =(req, res) => {
 
@@ -14,7 +14,7 @@ const users =(req, res) => {
         apellido: req.query.apellido
     
       })
-
   }
   
 module.exports = {users}
+*/

@@ -1,10 +1,12 @@
 
 
 const mongoose = require("mongoose")
+require("dotenv").config()  
+
 
 const conect = async()=>{
     try {
-        await mongoose.connect("mongodb+srv://Guillermo:2h1emem@cluster0.zccgyxc.mongodb.net/test")
+        await mongoose.connect(process.env.CONECTMONGO)
         console.log("Base de datos Conectada")
     } catch {
         console.log("No se pudo conectar a la base de datos")

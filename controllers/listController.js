@@ -1,5 +1,4 @@
-
-
+/*
 const list =(req, res) => {
 
     res.status(200).json({
@@ -12,3 +11,4 @@ const list =(req, res) => {
   }
  
  module.exports = {list}
+ */
