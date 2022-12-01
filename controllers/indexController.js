@@ -142,6 +142,28 @@ const users = (req, res) => {
 }
 
 
+const crearSession = (req, res) => {
+
+    let persona = {
+        nombre: "Guille",
+        id: "12345",
+        idioma: "Español"
+    }
+    req.session.usuario = persona
+    res.status(200).json(req.session.usuario)
+}
+
+const verSession = (req, res) => {
+    res.status(200).json(req.session)
+
+}
+
+const cerrarSession = (req, res) => {
+    req.session.destroy()
+    res.json({
+        msg: "Sesion Cerrada"
+    })
+}
 
 
-module.exports = { index, list, sumar, division, parImpar, ejemploPost, ejemploBody, crearZapatilla, vistaUnicaZapatos, verZapatilla, edtarZapatilla, eliminarZapatilla, users }
+module.exports = { index, list, sumar, division, parImpar, ejemploPost, ejemploBody, crearZapatilla, vistaUnicaZapatos, verZapatilla, edtarZapatilla, eliminarZapatilla, users, crearSession, verSession, cerrarSession }

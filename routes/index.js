@@ -3,8 +3,9 @@
 const express = require("express")
 const router = express.Router()
 
-const { index, ejemploPost, ejemploBody, crearZapatilla, list, sumar, division, parImpar, vistaUnicaZapatos, verZapatilla, edtarZapatilla, eliminarZapatilla, users } = require("../controllers/indexController")
+const { index, ejemploPost, ejemploBody, crearZapatilla, list, sumar, division, parImpar, vistaUnicaZapatos, verZapatilla, edtarZapatilla, eliminarZapatilla, users, crearSession, verSession, cerrarSession } = require("../controllers/indexController")
 const { validarId } = require("../middlewares/validarId")
+const auth = require("../middlewares/auth")
 const { check } = require("express-validator")
 
 
@@ -18,6 +19,9 @@ router.get('/body', ejemploBody)
 router.get('/ver', verZapatilla)
 router.get('/ver/:id', validarId, vistaUnicaZapatos)
 router.get('/usuario', users)
+router.get('/crearsession', crearSession)
+router.get('/versession',auth,verSession)
+router.get('/cerrarsession', cerrarSession)
 
 
 //Metodo POST
