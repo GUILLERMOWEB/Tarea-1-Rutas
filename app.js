@@ -3,21 +3,27 @@ const app = express()//Asigno express como una función para darle metodos y rec
 const logger= require("morgan")
 const cors = require ("cors")
 const session = require ("express-session")
+const cookieParser= require("cookie-parser")
 require ("dotenv").config()
 const indexRouter = require('./routes/index')
 
 
 const {conect}=require("./db/db")
 
+
 //Configuración
 app.use(logger("dev"))
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 app.use(session({
     secret: process.env.SECRET_SESSION,
     resave: true,
     saveUninitialized: true    
 }))
+
+
+
 
 
 app.use('/api', indexRouter ) //API de usuario

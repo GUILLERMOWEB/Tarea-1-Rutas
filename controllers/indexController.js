@@ -1,6 +1,32 @@
 const { Shoe } = require("../models/zapatillas")
+const {User}= require('../models/user')
 const { validationResult } = require("express-validator")
 
+const bcrypt = require("bcryptjs")
+let salt = bcrypt.genSaltSync(10)
+
+const register = async (req, res) => {
+    try {
+        const err = validationResult(req)
+        if (err.isEmpty()) {
+            let hash= bcrypt.hashSync(req.body.password, salt)
+            const user={
+                name: req.body.name,
+                email: req.body.email,
+                password: hash
+            }
+
+            const item = new User(user)
+            await item.save()
+            res.status(201).json({ item })
+        } else {
+            res.status(501).json({ err })
+        }
+
+    } catch (error) {
+        res.status(501).json({ error })
+    }
+}
 
 const index = (req, res) => {
     res.status(200).send('Hello world!')
@@ -149,10 +175,19 @@ const crearSession = (req, res) => {
         id: "12345",
         idioma: "Español"
     }
+    res.cookie("personaEnSession",persona.id,{maxAge: 123000})//buscamos utilidad
     req.session.usuario = persona
-    res.status(200).json(req.session.usuario)
+    res.status(200).json(req.session.usuario)//buscamos unidad
 }
 
+const verCookie= (req, res)=>{
+    res.json(req.cookies.personaEnSession)
+}
+
+const eliminarCookie=(req, res)=>{
+    res.clearCookie("personaEnSession")
+    res.json({msg: "Cookie Borrada"})
+}
 const verSession = (req, res) => {
     res.status(200).json(req.session)
 
@@ -166,4 +201,39 @@ const cerrarSession = (req, res) => {
 }
 
 
-module.exports = { index, list, sumar, division, parImpar, ejemploPost, ejemploBody, crearZapatilla, vistaUnicaZapatos, verZapatilla, edtarZapatilla, eliminarZapatilla, users, crearSession, verSession, cerrarSession }
+const login = async(req,res)=>{
+
+    try {
+        const err = validationResult(req)
+        if (err.isEmpty()){
+            const usuario = await User.findOne({email: req.body.email})
+            if (usuario == null){
+                res.status(501).json({msg: "El usuario o la contraseña es incorrecto"})
+            }
+         if (!bcrypt.compareSync(req.body.password, usuario.password)) {
+            res.status(501).json({msg: "El usuario o la contraseña es incorrecto"})    
+            }
+
+            const user = {
+                    _id: usuario._id,
+                    name: usuario.name
+            }
+            req.session.usuario = user
+            if(req.body.remember){
+                res.cookie("personaEnSession", req.session.usuario, {maxAge: 60000*60*24})
+            }
+            res.json({msg: "Usuario Logeado"})
+        }else {
+           res.status(501).json(err)
+        }
+    } catch (error) {
+        res.status(501).json(error)
+    }
+}
+
+const logout = (req, res)=>{
+    res.clearCookie("personaEnSession")
+    req.session.destroy()
+    res.json({msg: "Se Cerro la Session"})
+}
+module.exports = { index, list, sumar, division, parImpar, ejemploPost, ejemploBody, crearZapatilla, vistaUnicaZapatos, verZapatilla, edtarZapatilla, eliminarZapatilla, users, crearSession, verSession, cerrarSession, verCookie, eliminarCookie, login,logout}
